@@ -64,7 +64,7 @@
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
 
-      const businessName = "KDW Builders"
+      const businessName = "KDW Construction"
       const client = document.getElementById("client").value;
       const amount = document.getElementById("amount").value;
       const vatAmount = amount * 0.2;
@@ -116,7 +116,8 @@
       doc.setFont("helvetica", "normal");
       doc.text("Thank you for your business!", left, 140);
 
-      doc.save("invoice.pdf");
+      const pdfBlob = doc.output("bloburl");
+      window.open(pdfBlob);
     }
   </script>
 </body>
