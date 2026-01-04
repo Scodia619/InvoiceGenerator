@@ -116,8 +116,24 @@
       doc.setFont("helvetica", "normal");
       doc.text("Thank you for your business!", left, 140);
 
-      const pdfBlob = doc.output("bloburl");
-      window.open(pdfBlob);
+      const pdfBlob = doc.output("blob");
+
+      const file = new File(
+        [pdfBlob],
+        "invoice.pdf",
+        { type: "application/pdf" }
+      );
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({
+          files: [file],
+          title: "Invoice",
+          text: "Invoice PDF"
+        });
+      } else {
+        const url = URL.createObjectURL(pdfBlob);
+        window.open(url);
+      }
     }
   </script>
 </body>
