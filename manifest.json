@@ -1,0 +1,8 @@
+{
+  "name": "Invoice Generator",
+  "short_name": "Invoices",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#7BB2D9",
+  "theme_color": "#7BB2D9"
+}
