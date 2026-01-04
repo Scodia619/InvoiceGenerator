@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inovice Generator</title>
+</head>
+<body>
+  <div class="main">
+    <h2>Invoice Generator</h2>
+
+    <label for="client">Client:</label>
+    <input id="client" placeholder="Client name" />
+    <br /><br />
+    <label for="amount">Amount: (£)</label>
+    <input id="amount" placeholder="Amount"/>
+    <br /><br />
+
+    <button onclick="generatePDF()">Generate PDF</button>
+  </div>
+
+  <style>
+    body{
+      background-color: #7BB2D9;
+      width: 99%;
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main{
+      background-color: white;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      height: 300px;
+      width: 200px;
+      border: 1px solid black;
+      border-radius: 1rem;
+    }
+
+    input{
+      border: 1px solid black;
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+
+    button{
+      padding: 0.5rem;
+      width: 90%;
+      background-color: #7BB2D9;
+      border: 1px solid black;
+      border-radius: 1rem;
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const businessName = "KDW Builders"
+      const client = document.getElementById("client").value;
+      const amount = document.getElementById("amount").value;
+      const vatAmount = amount * 0.2;
+      const totalAmount = parseInt(amount) + vatAmount;
+      const date = new Date().toLocaleDateString();
+
+      const left = 20;
+      const right = 190;
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(22);
+      doc.text(`INVOICE: ${businessName}`, left, 25);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.text(`Invoice #: ${Math.floor(Math.random() * 100000)}`, right, 20, { align: "right" });
+      doc.text(`Date: ${date}`, right, 26, { align: "right" });
+
+      doc.setLineWidth(0.5);
+      doc.line(left, 32, right, 32);
+
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text("Bill To:", left, 45);
+
+      doc.setFont("helvetica", "normal");
+      doc.text(client, left, 52);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Description", left, 75);
+      doc.text("Amount", right, 75, { align: "right" });
+
+      doc.line(left, 78, right, 78);
+
+      doc.setFont("helvetica", "normal");
+      doc.text("Service Fee", left, 90);
+      doc.text(`$${amount}`, right, 90, { align: "right" });
+      doc.text("VAT", left, 95);
+      doc.text(`$${vatAmount}`, right, 95, { align: "right" });
+
+      doc.setLineWidth(0.7);
+      doc.line(left, 105, right, 105);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Total", left, 118);
+      doc.text(`$${totalAmount}`, right, 118, { align: "right" });
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.text("Thank you for your business!", left, 140);
+
+      doc.save("invoice.pdf");
+    }
+  </script>
+</body>
+</html>
